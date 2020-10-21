@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Hola Terraform !"
+title: "Hola Terraform!"
 published: true
 ---
 
@@ -20,20 +20,16 @@ published: true
 
  အခုအချိန်မှာ `terraform 0.12.x` ကို laptop ထဲမှာ ထည့်သွင်းပြီး aws cli ကိုပါ configure ပြုလုပ်ပြီးပြီ ဟုယူဆပါမယ်။ ပထမဆုံး ကျွန်တော်တို့ HCL ကို ရေးဖို့ `main.tf` ဆိုတဲ့ file ကို တည်ဆောက်ပါမယ်။ `.tf` extension ကတော့ terraform ရဲ့ configuration ဖြစ်တယ်လို့ terraform run တဲ့ အချိန်မှာ အချက်ပြလိုက်သလိုပါဘဲ၊ main ကတော့ convention၊ terraform ရဲ့ entry point ပေါ့၊ ဒါပေမဲ့ ဒီ main နေရာမှာ ကြိုက်တဲ့နာမည် ထားလို့ရပါတယ်။ ကျွန်တော်ကတော့ ပုံမှန် main နဲ့ဘဲ အသုံးများတယ်။ terraform တကယ် ဂရုစိုက်တာကတော့ သူ run သွားတဲ့ directory အောက်က `.tf` file ပါဘဲ။
 
-{% tabs %}
-{% tab title="Terraform" %}
-{% code title="main.tf" %}
-```text
+## Terraform
+```hcl
 resource "aws_instance" "k8smm" {
   ami           = "ami-0520e698dd500b1d1"
   instance_type = "t2.micro"
   }
 ```
-{% endcode %}
-{% endtab %}
 
-{% tab title="AWSCloudFormation" %}
-```javascript
+## AWSCloudFormation
+```json
 {
   "Resources": {
     "k8smm": {
@@ -46,8 +42,7 @@ resource "aws_instance" "k8smm" {
      }
    }
 ```
-{% endtab %}
-{% endtabs %}
+
 
 Terraform က declarative \(declare what we want\) ဆိုတဲ့အတိုင်း `main.tf` file ထဲမှာ ကျွန်တော်တို့ တည်ဆောက်ချင်တဲ့ image ရဲ့ AMI ရယ်၊ instance type ရယ်ကို ထည့်ပေးရပါတယ်။ ami id ကိုတော့ `Red Hat Enterprise Linux 8` ကိုသုံးထားပါတယ်။ instance type ကိုတော့ `t2.micro` ဆိုတဲ့ အသေးစားလေးဘဲ သုံးထားပါတယ်။ နောက်တစ် tab မှာရှိတဲ့ syntax တွေကတော့ အခု terraform ကို သုံးပြီး တည်ဆောက်မဲ့ HCL language ရဲ့ code တွေနဲ့ အဓိပ္ပါယ် တူညီတဲ့ AWS ရဲ့ CloudFormation json syntax ဖြစ်ပါတယ်။
 
@@ -65,18 +60,16 @@ resource တစ်ခုစီတိုင်းမှာ inputs တွေနဲ
 
 အပေါ်က ပြောခဲ့တဲ့ operations အတိုင်း ec2 instance တည်ဆောက်ဖို့ terraform configuration file ကို ရေးပြီးတော့ aws provider အတွက် configure ထပ်လုပ်ပါမယ်။ AWS provider ကတော့ AWS ကို API Calls တွေခေါ်ပြီး authenticated ဖြစ်စေရန်အတွက် ဖြစ်ပါတယ်။ Terraform က သူရဲ့ configuration code တွေကို ဖတ်ပြီး evaluate လုပ်တဲ့အခါမှာ provider မှ လိုအပ်တဲ့ resource တွေကို dynamically ရှာဖွေပြီး လိုအပ်တာတွေကို လုပ်ပေးပါတယ်။ ဒီနေရာမှာ provider ကို auth ပြုလုပ်ဖို့ အရင် `terrform version 0.11` အထိ aws credentials ကို file ကနေဖတ်ပြီး သုံးကြပါတယ်။ `terraform version 0.12` မှစပြီး file မှ credentials တွေ ဖတ်တာ deprecated ဖြစ်သွားပါပြီ။ `terraform version 0.12` မှာတော့ `~/.aws/credentials` ကနေ သို့မဟုတ် `environment variable` မှတဆင့် credentials ကို ဖတ်ပါတယ်။
 
-{% tabs %}
-{% tab title="provider.tf" %}
-```text
+## provider.tf
+```hcl
 provider "aws" {
   version = "2.12.0"
   region = "us-east-2"
 }
 ```
-{% endtab %}
 
-{% tab title="main.tf" %}
-```text
+## main.tf
+```hcl
 provider "aws" {
   version = "2.12.0"
   region  = "us-east-2"
@@ -87,8 +80,7 @@ resource "aws_instance" "k8smm" {
   instance_type = "t2.micro"
 }
 ```
-{% endtab %}
-{% endtabs %}
+
 
 အပေါ်မှာ ပြထားတဲ့အတိုင်း provider ကိုတော့ `provider.tf` ဆိုပြီး နောက်တစ် file ခွဲရေးလို့ရသလို main.tf file ထဲမှာလဲ တစ်ခါထဲ ပေါင်းရေးလို့ရပါတယ်။ provider မှာတော့ output မရှိပါဘူး။ code block ထဲမှာ ထည့်ပေးရမဲ့ inputs \(configuration arguments\) ဘဲ ရှိပါတယ်။ အခုဒီမှာ သုံးထားတဲ့ inputs configurations တွေကတော့ region နဲ့ provider version ဘဲဖြစ်ပါတယ်။ credentials တွေကို inputs configuration ထဲမထည့်တော့ပါဘူး။ အပေါ်မှာ ပြောခဲ့သလို `~/.aws/credentials` ထဲကနေဘဲ အလိုအလျောက် ဖတ်ပါ့မယ်။ ဒါဆိုရင်တော့ ကျွန်တော်တို့ နောက်တဆင့်ဖြစ်တဲ့ terraform ကို Initialization ပြုလုပ်လို့ရပါပီ။ အခု terraform code တွေ ရေးထားတဲ့ folder က terraform အတွက် workspace အသစ်ဖြစ်နေပြီး workspace အသစ် တိုင်းအတွက် Initialization ပြုလုပ်ဖို့လိုအပ်ပါတယ်။ Initialization ပြုလုပ်ဖို့အတွက်ကတော့ `terraform init` command ကို run ရုံပါဘဲ။ `terraform init` လုပ်လိုက်တဲ့အခါမှာ လိုအပ်တဲ့ provider binary တွေကို `.terraform/plugins` အောက်ထဲကို ဒေါင်းလော့ဆွဲချပေးသွားမှာ ဖြစ်ပါတယ်။
 
