@@ -46,9 +46,9 @@ resource "aws_instance" "k8smm" {
 
 Terraform က declarative \(declare what we want\) ဆိုတဲ့အတိုင်း `main.tf` file ထဲမှာ ကျွန်တော်တို့ တည်ဆောက်ချင်တဲ့ image ရဲ့ AMI ရယ်၊ instance type ရယ်ကို ထည့်ပေးရပါတယ်။ ami id ကိုတော့ `Red Hat Enterprise Linux 8` ကိုသုံးထားပါတယ်။ instance type ကိုတော့ `t2.micro` ဆိုတဲ့ အသေးစားလေးဘဲ သုံးထားပါတယ်။ နောက်တစ် tab မှာရှိတဲ့ syntax တွေကတော့ အခု terraform ကို သုံးပြီး တည်ဆောက်မဲ့ HCL language ရဲ့ code တွေနဲ့ အဓိပ္ပါယ် တူညီတဲ့ AWS ရဲ့ CloudFormation json syntax ဖြစ်ပါတယ်။
 
-{% hint style="warning" %}
-ဒီ RHEL8 ami ကတော့ us-east-2 အတွက်ဘဲ valid ဖြစ်ဖို့ များပါတယ်။
-{% endhint %}
+
+> ဒီ RHEL8 ami ကတော့ us-east-2 အတွက်ဘဲ valid ဖြစ်ဖို့ များပါတယ်။
+
 
 ![Terraform syntax of AWS EC2 instance](../assets/images/terraform-syntax.png)
 
